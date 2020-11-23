@@ -1,5 +1,6 @@
 img="";
 status="";
+objects=[];
 function preload(){
     img=loadImage("dog_cat.jpg")
 }
@@ -7,36 +8,26 @@ function preload(){
 function setup(){
     canvas=createCanvas(400,400);
     canvas.position(435,160);
-    objectdetector=ml5.objectDetector('cocossd'),modelloaded;
+    objectdetector=ml5.objectDetector('cocossd',modelloaded);
     document.getElementById("status").innerHTML="Status : detecting Objects";
 }
 
 function draw(){
     image(img,0,0,400,400);
-    fill("blue")
-    text("dog",100,100,);
-    noFill();
-    stroke("blue");
-    //🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈//
-//🌟 Thank you for using ml5.js v0.6.0 🌟
+    if(status != ""){
+        for (var i = 0; i < objects.length; i++) { document.getElementById("status").innerHTML = "Status : Object Detected";
+         fill(255, 0, 0); percent = floor(objects[1].confidence * 100);
+          text(objects[1].label + " " + percent + "%", objects[1].x + 15, objects[1].y + 15);
+           noFill();
+            stroke(255, 0, 0);
+             rect(objects[1].x, objects[1].y, objects[1].width, objects[1].height);
 
-//Please read our community statement to ensure 
-//that the use of this software reflects the values 
-//of the ml5.js community:
-//↳ https://ml5js.org/about
-
-//Reporting: 
-//↳ https://github.com/ml5js/ml5-library/issues
-//↳ Email: info@ml5js.org 
-//🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈//
-rect(100,50,100,400);
-
-    fill("red")
-    text("cat",200,200,);
-    noFill();
-    stroke("red");
-
-    rect(200,100,300,258)
+             fill(255, 0, 0); percent = floor(objects[0].confidence * 100);
+          text(objects[0].label + " " + percent + "%", objects[0].x -100, objects[0].y + 15);
+           noFill();
+            stroke(255, 0, 0);
+             rect(objects[0].x-200, objects[0].y, objects[0].width, objects[0].height); }
+    } 
 }
 
 function modelloaded(){
@@ -50,6 +41,7 @@ function gotresult(error,result){
         console.error(error);
     }
     else{
-        console.log(result)
+        console.log(result);
+        objects=result;
     }
 }
